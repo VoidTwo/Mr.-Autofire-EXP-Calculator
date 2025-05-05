@@ -56,13 +56,51 @@
   <div class="section">
     <label>Run Type:
       <select id="run_type">
-        <option value="CAMPAIGN_12_ROOMS">Campaign 12 Rooms</option>
+        <option value="CAMPAIGN_12_ROOMS" selected>Campaign 12 Rooms</option>
         <option value="CAMPAIGN_30_ROOMS">Campaign 30 Rooms</option>
         <option value="TOWER_CASTLE_20_ROOMS">Tower/Castle 20 Rooms</option>
       </select>
     </label>
     <label>EXP Per Room:
-      <input type="number" id="exp_per_room" value="100000" />
+      <input type="number" id="exp_per_room" value="85550" />
+    </label>
+    <label>Load World EXP:
+      <select id="world_select" onchange="loadExpPerRoomFromWorld()">
+        <option value="">---</option>
+        <option value="W1">W1 - 30 Rooms</option>
+        <option value="W2">W2 - 30 Rooms</option>
+        <option value="W3">W3 - 12 Rooms</option>
+        <option value="W4">W4 - 30 Rooms</option>
+        <option value="W5">W5 - 30 Rooms</option>
+        <option value="W6">W6 - 30 Rooms</option>
+        <option value="W7">W7 - 30 Rooms</option>
+        <option value="W8">W8 - 12 Rooms</option>
+        <option value="W9">W9 - 30 Rooms</option>
+        <option value="W10">W10 - 30 Rooms</option>
+        <option value="W11">W11 - 30 Rooms</option>
+        <option value="W12">W12 - 30 Rooms</option>
+        <option value="W13">W13 - 30 Rooms</option>
+        <option value="W14">W14 - 30 Rooms</option>
+        <option value="W15">W15 - 12 Rooms</option>
+        <option value="W16">W16 - 30 Rooms</option>
+        <option value="W17">W17 - 30 Rooms</option>
+        <option value="W18">W18 - 30 Rooms</option>
+        <option value="W19" selected>W19 - 12 Rooms</option>
+        <option value="W20">W20 - 30 Rooms</option>
+        <option value="W21">W21 - 30 Rooms</option>
+        <option value="W22">W22 - 30 Rooms</option>
+        <option value="W23">W23 - 30 Rooms</option>
+        <option value="W24">W24 - 30 Rooms</option>
+        <option value="W25">W25 - 30 Rooms</option>
+        <option value="W26">W26 - 12 Rooms</option>
+        <option value="W27">W27 - 30 Rooms</option>
+        <option value="W28">W28 - 30 Rooms</option>
+        <option value="W29">W29 - 30 Rooms</option>
+        <option value="W30">W30 - 30 Rooms</option>
+        <option value="W31">W31 - 12 Rooms</option>
+        <option value="W32">W32 - 30 Rooms</option>
+        <option value="W33">W33 - 12 Rooms</option>
+      </select>
     </label>
   </div>
 
@@ -109,6 +147,13 @@
     <label>Hero EXP Multiplier (%):
       <input type="number" id="hero_exp_multiplier" value="0" />
     </label>
+    <label>Load Hero Skill Tree EXP Multiplier:
+      <select id="hero_skill_tree_select" onchange="loadExpMultiplierFromSkillTree()">
+        <option value="NORMAL" selected>Other</option>
+        <option value="SUPPRESSIVE">Suppressive Fire</option>
+        <option value="FORTUNE">Jackbot</option>
+      </select>
+    </label>
   </div>
 
   <div class="section">
@@ -124,6 +169,50 @@
   <canvas id="chart" width="800" height="350" style="background-color: #1e1e1e;"></canvas>
 
   <script>
+    'use strict'
+
+    const campaignExpPerRoomData = {
+      W1: 5,
+      W2: 8,
+      W3: 52,
+      W4: 52,
+      W5: 130,
+      W6: 325,
+      W7: 488,
+      W8: 2_441,
+      W9: 1_952,
+      W10: 3_905,
+      W11: 7_810,
+      W12: 9_500,
+      W13: 11_500,
+      W14: 14_000,
+      W15: 42_000,
+      W16: 22_500,
+      W17: 25_875,
+      W18: 29_757,
+      W19: 85_550,
+      W20: 39_353,
+      W21: 45_256,
+      W22: 52_044,
+      W23: 59_851,
+      W24: 68_829,
+      W25: 75_712,
+      W26: 208_206,
+      W27: 91_611,
+      W28: 100_772,
+      W29: 110_849,
+      W30: 121_934,
+      W31: 335_318,
+      W32: 130_000,
+      W33: 349_860}
+    Object.freeze(campaignExpPerRoomData)
+
+    const skillTreeExpMultipliersData = {
+      NORMAL: 0,
+      SUPPRESSIVE: 5,
+      FORTUNE: 8}
+    Object.freeze(skillTreeExpMultipliersData)
+
     const frequencyData = {
       CAMPAIGN_12_ROOMS: [
         12,
@@ -146,6 +235,21 @@
     Object.freeze(simchipMultipliers)
     const dataSneakersMultipliers = { ...simchipMultipliers }
     Object.freeze(dataSneakersMultipliers)
+
+    const loadExpPerRoomFromWorld = () => {
+      let world = document.getElementById('world_select').value
+
+      if (world && campaignExpPerRoomData[world]) {
+        document.getElementById('exp_per_room').value = campaignExpPerRoomData[world]
+      }
+    }
+    Object.freeze(loadExpPerRoomFromWorld)
+
+    const loadExpMultiplierFromSkillTree = () => {
+      let skillTree = document.getElementById('hero_skill_tree_select').value
+      document.getElementById('hero_exp_multiplier').value = skillTreeExpMultipliersData[skillTree]
+    }
+    Object.freeze(loadExpMultiplierFromSkillTree)
 
     const getRadioValue = (name) => {
       return document.querySelector(`input[name="${name}"]:checked`).value
