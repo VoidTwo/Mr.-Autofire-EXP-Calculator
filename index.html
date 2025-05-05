@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>EXP Calculator</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+
+    .section {
+      margin-bottom: 1em;
+    }
+
+    label {
+      margin-right: 1em;
+    }
+
+    select,
+    input[type="number"],
+    button {
+      background-color: #1e1e1e;
+      color: #e0e0e0;
+      border: 1px solid #444;
+      padding: 5px;
+      border-radius: 4px;
+    }
+
+    input[type="radio"] {
+      accent-color: #6348e3;
+    }
+
+    button {
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #333;
+    }
+
+    canvas {
+      background-color: #1e1e1e;
+      border: 1px solid #444;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>EXP Calculator</h1>
+
+  <div class="section">
+    <label>Run Type:
+      <select id="run_type">
+        <option value="CAMPAIGN_12_ROOMS">Campaign 12 Rooms</option>
+        <option value="CAMPAIGN_30_ROOMS">Campaign 30 Rooms</option>
+        <option value="TOWER_CASTLE_20_ROOMS">Tower/Castle 20 Rooms</option>
+      </select>
+    </label>
+    <label>EXP Per Room:
+      <input type="number" id="exp_per_room" value="100" />
+    </label>
+  </div>
+
+  <div class="section">
+    <strong>Tech Uniform Rarity:</strong><br/>
+    <label><input type="radio" name="tech_uniform_rarity" value="NONE" checked />NONE</label>
+    <label><input type="radio" name="tech_uniform_rarity" value="COMMON" />Common</label>
+    <label><input type="radio" name="tech_uniform_rarity" value="UNCOMMON" />Uncommon</label>
+    <label><input type="radio" name="tech_uniform_rarity" value="RARE" />Rare</label>
+    <label><input type="radio" name="tech_uniform_rarity" value="EPIC" />Epic</label>
+    <label><input type="radio" name="tech_uniform_rarity" value="LEGENDARY" />Legendary</label>
+    <label><input type="radio" name="tech_uniform_rarity" value="MYTHICAL" />Mythical</label>
+    <label><input type="radio" name="tech_uniform_rarity" value="EXALTED" />Exalted</label>
+    <label><input type="radio" name="tech_uniform_rarity" value="DELUXE" />Deluxe</label>
+  </div>
+
+  <div class="section">
+    <strong>Simchip Rarity:</strong><br/>
+    <label><input type="radio" name="simchip_rarity" value="NONE" checked />NONE</label>
+    <label><input type="radio" name="simchip_rarity" value="COMMON" />Common</label>
+    <label><input type="radio" name="simchip_rarity" value="UNCOMMON" />Uncommon</label>
+    <label><input type="radio" name="simchip_rarity" value="RARE" />Rare</label>
+    <label><input type="radio" name="simchip_rarity" value="EPIC" />Epic</label>
+    <label><input type="radio" name="simchip_rarity" value="LEGENDARY" />Legendary</label>
+    <label><input type="radio" name="simchip_rarity" value="MYTHICAL" />Mythical</label>
+    <label><input type="radio" name="simchip_rarity" value="EXALTED" />Exalted</label>
+    <label><input type="radio" name="simchip_rarity" value="DELUXE" />Deluxe</label>
+  </div>
+
+  <div class="section">
+    <strong>Data Sneakers Rarity:</strong><br/>
+    <label><input type="radio" name="data_sneakers_rarity" value="NONE" checked />NONE</label>
+    <label><input type="radio" name="data_sneakers_rarity" value="COMMON" />Common</label>
+    <label><input type="radio" name="data_sneakers_rarity" value="UNCOMMON" />Uncommon</label>
+    <label><input type="radio" name="data_sneakers_rarity" value="RARE" />Rare</label>
+    <label><input type="radio" name="data_sneakers_rarity" value="EPIC" />Epic</label>
+    <label><input type="radio" name="data_sneakers_rarity" value="LEGENDARY" />Legendary</label>
+    <label><input type="radio" name="data_sneakers_rarity" value="MYTHICAL" />Mythical</label>
+    <label><input type="radio" name="data_sneakers_rarity" value="EXALTED" />Exalted</label>
+    <label><input type="radio" name="data_sneakers_rarity" value="DELUXE" />Deluxe</label>
+  </div>
+
+  <div class="section">
+    <label>Hero EXP Multiplier (%):
+      <input type="number" id="hero_exp_multiplier" value="0" />
+    </label>
+  </div>
+
+  <div class="section">
+    <label>End of Run EXP Multiplier (%):
+      <input type="number" id="end_run_exp_multiplier" value="0" />
+    </label>
+  </div>
+
+  <div>
+    <button onclick="generateChart()">Generate Chart</button>
+  </div>
+
+  <canvas id="chart" width="800" height="350" style="background-color: #1e1e1e;"></canvas>
+
+  <script>
+    const frequencyData = {
+      CAMPAIGN_12_ROOMS: [
+        12,
+        [40353607000,155649627000,266827932000,266827932000,171532242000,73513818000,21003948000,3857868000,413343000,19683000]],
+      CAMPAIGN_30_ROOMS: [
+        30,
+        [65712362,760385907,4236435770,15130127748,38906042781,76700484340,120529332535,154966284687,166035305022,150222418830,115885865954,76755573554,43860327745,21689173061,9295359883,3452562242,1109752149,307746394,73272951,14874960,2549993,364285,42579,3967,283,15,0,0]],
+      TOWER_CASTLE_20_ROOMS: [
+        20,
+        [1628413598,12562047755,45761745394,104598275187,168104370836,201725245004,187316298932,137620137991,81097581316,38617895865,14895474119,4642745180,1160686295,229586300,35140760,4016087,322721,16272,387]]};
+
+    const techUniformMultipliers = {
+      NONE: 0.0, COMMON: 0.30, UNCOMMON: 0.45, RARE: 0.60, EPIC: 0.75, LEGENDARY: 0.90, MYTHICAL: 1.05, EXALTED: 1.20, DELUXE: 1.35};
+
+    const simchipMultipliers = {
+      NONE: 0.0, COMMON: 0.06, UNCOMMON: 0.09, RARE: 0.12, EPIC: 0.15, LEGENDARY: 0.18, MYTHICAL: 0.21, EXALTED: 0.24, DELUXE: 0.27};
+
+    const dataSneakersMultipliers = { ...simchipMultipliers };
+
+    function getRadioValue(name) {
+      return document.querySelector(`input[name="${name}"]:checked`).value;
+    }
+
+    function generateChart() {
+      const runType = document.getElementById('run_type').value;
+      const expPerRoom = parseFloat(document.getElementById('exp_per_room').value);
+      const techRarity = getRadioValue('tech_uniform_rarity');
+      const simchipRarity = getRadioValue('simchip_rarity');
+      const sneakerRarity = getRadioValue('data_sneakers_rarity');
+
+      const baseExpMultiplier = 1 + simchipMultipliers[simchipRarity] + dataSneakersMultipliers[sneakerRarity] + (document.getElementById('hero_exp_multiplier').value / 100);
+      const techExpMultiplier = 1 + techUniformMultipliers[techRarity];
+      const endRunExpMultiplier = 1 + (document.getElementById('end_run_exp_multiplier').value / 100)
+
+      const baseRoomExp = Math.floor(expPerRoom * baseExpMultiplier);
+      const withTechRoomExp = Math.floor(baseRoomExp * techExpMultiplier);
+
+      const [totalRooms, freqList] = frequencyData[runType];
+
+      const expValues = [];
+      const percentLikelihoods = [];
+
+      const totalFrequency = 1_000_000_000_000;
+
+      for (let numTechProcs = 0; numTechProcs < freqList.length; numTechProcs++) {
+        const numBaseExpRooms = totalRooms - numTechProcs;
+        const totalExp = Math.floor((numBaseExpRooms * baseRoomExp + numTechProcs * withTechRoomExp) * endRunExpMultiplier);
+        expValues.push(totalExp);
+        const percent = (freqList[numTechProcs] / totalFrequency) * 100;
+        percentLikelihoods.push(percent);
+      }
+
+      const ctx = document.getElementById('chart').getContext('2d');
+      if (window.expChart) window.expChart.destroy();
+
+      window.expChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: expValues.map(v => v.toLocaleString()),
+          datasets: [{
+            label: 'Expected EXP Distribution',
+            data: percentLikelihoods,
+            backgroundColor: 'rgba(156, 104, 240, 0.6)',
+            borderColor: 'rgba(156, 104, 240, 1)',
+            borderWidth: 1}]},
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: {
+                color: '#e0e0e0',
+                font: {
+                  size: 16}}}},
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Likelihood (%)',
+                color: '#e0e0e0',
+                font: {
+                  size: 18}},
+              ticks: {
+                color: '#e0e0e0',
+                font: {
+                  size: 14},
+                callback: function(value) {
+                  return value + '%';}},
+              grid: {
+                color: '#333'}},
+            x: {
+              title: {
+                display: true,
+                text: 'EXP',
+                color: '#e0e0e0',
+                font: {
+                  size: 18}},
+              ticks: {
+                color: '#e0e0e0',
+                font: {
+                  size: 14}},
+              grid: {
+                color: '#333'}}}}});
+    }
+  </script>
+</body>
+</html>
