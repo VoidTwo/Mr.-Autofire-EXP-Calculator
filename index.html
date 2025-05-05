@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>EXP Calculator</title>
+  <title>Mr. Autofire EXP Calculator</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
@@ -25,7 +25,7 @@
     button {
       background-color: #1e1e1e;
       color: #e0e0e0;
-      border: 1px solid #444;
+      border: 1px solid #040404;
       padding: 5px;
       border-radius: 4px;
     }
@@ -40,12 +40,12 @@
     }
 
     button:hover {
-      background-color: #333;
+      background-color: #030303;
     }
 
     canvas {
       background-color: #1e1e1e;
-      border: 1px solid #444;
+      border: 1px solid #040404;
       margin-top: 20px;
     }
   </style>
@@ -62,17 +62,17 @@
       </select>
     </label>
     <label>EXP Per Room:
-      <input type="number" id="exp_per_room" value="100" />
+      <input type="number" id="exp_per_room" value="100000" />
     </label>
   </div>
 
   <div class="section">
     <strong>Tech Uniform Rarity:</strong><br/>
-    <label><input type="radio" name="tech_uniform_rarity" value="NONE" checked />NONE</label>
+    <label><input type="radio" name="tech_uniform_rarity" value="NONE" />NONE</label>
     <label><input type="radio" name="tech_uniform_rarity" value="COMMON" />Common</label>
     <label><input type="radio" name="tech_uniform_rarity" value="UNCOMMON" />Uncommon</label>
     <label><input type="radio" name="tech_uniform_rarity" value="RARE" />Rare</label>
-    <label><input type="radio" name="tech_uniform_rarity" value="EPIC" />Epic</label>
+    <label><input type="radio" name="tech_uniform_rarity" value="EPIC" checked />Epic</label>
     <label><input type="radio" name="tech_uniform_rarity" value="LEGENDARY" />Legendary</label>
     <label><input type="radio" name="tech_uniform_rarity" value="MYTHICAL" />Mythical</label>
     <label><input type="radio" name="tech_uniform_rarity" value="EXALTED" />Exalted</label>
@@ -81,11 +81,11 @@
 
   <div class="section">
     <strong>Simchip Rarity:</strong><br/>
-    <label><input type="radio" name="simchip_rarity" value="NONE" checked />NONE</label>
+    <label><input type="radio" name="simchip_rarity" value="NONE" />NONE</label>
     <label><input type="radio" name="simchip_rarity" value="COMMON" />Common</label>
     <label><input type="radio" name="simchip_rarity" value="UNCOMMON" />Uncommon</label>
     <label><input type="radio" name="simchip_rarity" value="RARE" />Rare</label>
-    <label><input type="radio" name="simchip_rarity" value="EPIC" />Epic</label>
+    <label><input type="radio" name="simchip_rarity" value="EPIC" checked />Epic</label>
     <label><input type="radio" name="simchip_rarity" value="LEGENDARY" />Legendary</label>
     <label><input type="radio" name="simchip_rarity" value="MYTHICAL" />Mythical</label>
     <label><input type="radio" name="simchip_rarity" value="EXALTED" />Exalted</label>
@@ -94,11 +94,11 @@
 
   <div class="section">
     <strong>Data Sneakers Rarity:</strong><br/>
-    <label><input type="radio" name="data_sneakers_rarity" value="NONE" checked />NONE</label>
+    <label><input type="radio" name="data_sneakers_rarity" value="NONE" />NONE</label>
     <label><input type="radio" name="data_sneakers_rarity" value="COMMON" />Common</label>
     <label><input type="radio" name="data_sneakers_rarity" value="UNCOMMON" />Uncommon</label>
     <label><input type="radio" name="data_sneakers_rarity" value="RARE" />Rare</label>
-    <label><input type="radio" name="data_sneakers_rarity" value="EPIC" />Epic</label>
+    <label><input type="radio" name="data_sneakers_rarity" value="EPIC" checked />Epic</label>
     <label><input type="radio" name="data_sneakers_rarity" value="LEGENDARY" />Legendary</label>
     <label><input type="radio" name="data_sneakers_rarity" value="MYTHICAL" />Mythical</label>
     <label><input type="radio" name="data_sneakers_rarity" value="EXALTED" />Exalted</label>
@@ -133,51 +133,63 @@
         [65712362,760385907,4236435770,15130127748,38906042781,76700484340,120529332535,154966284687,166035305022,150222418830,115885865954,76755573554,43860327745,21689173061,9295359883,3452562242,1109752149,307746394,73272951,14874960,2549993,364285,42579,3967,283,15,0,0]],
       TOWER_CASTLE_20_ROOMS: [
         20,
-        [1628413598,12562047755,45761745394,104598275187,168104370836,201725245004,187316298932,137620137991,81097581316,38617895865,14895474119,4642745180,1160686295,229586300,35140760,4016087,322721,16272,387]]};
+        [1628413598,12562047755,45761745394,104598275187,168104370836,201725245004,187316298932,137620137991,81097581316,38617895865,14895474119,4642745180,1160686295,229586300,35140760,4016087,322721,16272,387]]}
+    Object.freeze(frequencyData)
+    const totalFrequency = 1_000_000_000_000
+    Object.freeze(totalFrequency)
 
     const techUniformMultipliers = {
-      NONE: 0.0, COMMON: 0.30, UNCOMMON: 0.45, RARE: 0.60, EPIC: 0.75, LEGENDARY: 0.90, MYTHICAL: 1.05, EXALTED: 1.20, DELUXE: 1.35};
-
+      NONE: 0.0, COMMON: 0.30, UNCOMMON: 0.45, RARE: 0.60, EPIC: 0.75, LEGENDARY: 0.90, MYTHICAL: 1.05, EXALTED: 1.20, DELUXE: 1.35}
+    Object.freeze(techUniformMultipliers)
     const simchipMultipliers = {
-      NONE: 0.0, COMMON: 0.06, UNCOMMON: 0.09, RARE: 0.12, EPIC: 0.15, LEGENDARY: 0.18, MYTHICAL: 0.21, EXALTED: 0.24, DELUXE: 0.27};
+      NONE: 0.0, COMMON: 0.06, UNCOMMON: 0.09, RARE: 0.12, EPIC: 0.15, LEGENDARY: 0.18, MYTHICAL: 0.21, EXALTED: 0.24, DELUXE: 0.27}
+    Object.freeze(simchipMultipliers)
+    const dataSneakersMultipliers = { ...simchipMultipliers }
+    Object.freeze(dataSneakersMultipliers)
 
-    const dataSneakersMultipliers = { ...simchipMultipliers };
-
-    function getRadioValue(name) {
-      return document.querySelector(`input[name="${name}"]:checked`).value;
+    const getRadioValue = (name) => {
+      return document.querySelector(`input[name="${name}"]:checked`).value
     }
+    Object.freeze(getRadioValue)
 
-    function generateChart() {
-      const runType = document.getElementById('run_type').value;
-      const expPerRoom = parseFloat(document.getElementById('exp_per_room').value);
-      const techRarity = getRadioValue('tech_uniform_rarity');
-      const simchipRarity = getRadioValue('simchip_rarity');
-      const sneakerRarity = getRadioValue('data_sneakers_rarity');
+    const addPercentSign = (value) => {
+      return value + '%'
+    }
+    Object.freeze(addPercentSign)
 
-      const baseExpMultiplier = 1 + simchipMultipliers[simchipRarity] + dataSneakersMultipliers[sneakerRarity] + (document.getElementById('hero_exp_multiplier').value / 100);
-      const techExpMultiplier = 1 + techUniformMultipliers[techRarity];
-      const endRunExpMultiplier = 1 + (document.getElementById('end_run_exp_multiplier').value / 100)
+    const generateChart = () => {
+      let runType = document.getElementById('run_type').value
+      let expPerRoom = parseFloat(document.getElementById('exp_per_room').value)
+      let techRarity = getRadioValue('tech_uniform_rarity')
+      let simchipRarity = getRadioValue('simchip_rarity')
+      let sneakersRarity = getRadioValue('data_sneakers_rarity')
 
-      const baseRoomExp = Math.floor(expPerRoom * baseExpMultiplier);
-      const withTechRoomExp = Math.floor(baseRoomExp * techExpMultiplier);
+      let baseExpMultiplier = 1 + simchipMultipliers[simchipRarity] + dataSneakersMultipliers[sneakersRarity] + (document.getElementById('hero_exp_multiplier').value / 100)
+      let techExpMultiplier = 1 + techUniformMultipliers[techRarity]
+      let endRunExpMultiplier = 1 + (document.getElementById('end_run_exp_multiplier').value / 100)
 
-      const [totalRooms, freqList] = frequencyData[runType];
+      let baseRoomExp = Math.floor(expPerRoom * baseExpMultiplier)
+      let withTechRoomExp = Math.floor(baseRoomExp * techExpMultiplier)
 
-      const expValues = [];
-      const percentLikelihoods = [];
+      let [totalRooms, freqList] = frequencyData[runType]
 
-      const totalFrequency = 1_000_000_000_000;
+      let expValues = Array(freqList.length).fill(null)
+      let percentLikelihoods = Array(freqList.length).fill(null)
 
       for (let numTechProcs = 0; numTechProcs < freqList.length; numTechProcs++) {
-        const numBaseExpRooms = totalRooms - numTechProcs;
-        const totalExp = Math.floor((numBaseExpRooms * baseRoomExp + numTechProcs * withTechRoomExp) * endRunExpMultiplier);
-        expValues.push(totalExp);
-        const percent = (freqList[numTechProcs] / totalFrequency) * 100;
-        percentLikelihoods.push(percent);
+        let numBaseExpRooms = totalRooms - numTechProcs
+        let totalExp = Math.floor((numBaseExpRooms * baseRoomExp + numTechProcs * withTechRoomExp) * endRunExpMultiplier)
+        expValues[numTechProcs] = totalExp
+
+        let percent = (freqList[numTechProcs] / totalFrequency) * 100
+        percentLikelihoods[numTechProcs] = percent
       }
 
-      const ctx = document.getElementById('chart').getContext('2d');
-      if (window.expChart) window.expChart.destroy();
+      let ctx = document.getElementById('chart').getContext('2d')
+
+      if (window.expChart) {
+        window.expChart.destroy()
+      }
 
       window.expChart = new Chart(ctx, {
         type: 'bar',
@@ -210,10 +222,9 @@
                 color: '#e0e0e0',
                 font: {
                   size: 14},
-                callback: function(value) {
-                  return value + '%';}},
+                callback: addPercentSign},
               grid: {
-                color: '#333'}},
+                color: '#030303'}},
             x: {
               title: {
                 display: true,
@@ -226,8 +237,9 @@
                 font: {
                   size: 14}},
               grid: {
-                color: '#333'}}}}});
+                color: '#030303'}}}}})
     }
+    Object.freeze(generateChart)
   </script>
 </body>
 </html>
