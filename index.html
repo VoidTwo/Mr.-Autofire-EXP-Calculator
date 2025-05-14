@@ -30,6 +30,18 @@
       border-radius: 4px;
     }
 
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox */
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
     input[type="radio"] {
       accent-color: #6348e3;
     }
@@ -101,6 +113,7 @@
         <option value="W32">W32 - 30 Rooms</option>
         <option value="W33">W33 - 12 Rooms</option>
         <option value="W34">W34 - 30 Rooms</option>
+        <option value="TOWER">Tower (51+) - 20 Rooms</option>
       </select>
     </label>
   </div>
@@ -169,10 +182,16 @@
 
   <canvas id="chart" width="800" height="350" style="background-color: #1e1e1e;"></canvas>
 
+  <div class="section">
+    <label>Average EXP:
+      <input type="number" id="weighted_average_exp" value="0" disabled />
+    </label>
+  </div>
+
   <script>
     'use strict'
 
-    const campaignExpPerRoomData = {
+    const expPerRoomData = {
       W1: 5,
       W2: 8,
       W3: 52,
@@ -206,8 +225,9 @@
       W31: 311_374,
       W32: 132_023,
       W33: 349_860,
-      W34: 148_341}
-    Object.freeze(campaignExpPerRoomData)
+      W34: 148_341,
+      TOWER: 15_300}
+    Object.freeze(expPerRoomData)
 
     const skillTreeExpMultipliersData = {
       NORMAL: 0,
@@ -241,8 +261,8 @@
     const loadExpPerRoomFromWorld = () => {
       let world = document.getElementById('world_select').value
 
-      if (world && campaignExpPerRoomData[world]) {
-        document.getElementById('exp_per_room').value = campaignExpPerRoomData[world]
+      if (world && expPerRoomData[world]) {
+        document.getElementById('exp_per_room').value = expPerRoomData[world]
       }
     }
     Object.freeze(loadExpPerRoomFromWorld)
@@ -289,7 +309,22 @@
 
         let percent = (freqList[numTechProcs] / totalFrequency) * 100
         percentLikelihoods[numTechProcs] = percent
+
+        numBaseExpRooms = null
+        totalExp = null
+        percent = null
       }
+
+      let weightedAverageExp = 0
+
+      for (let i = 0; i < expValues.length; i++) {
+        let probability = freqList[i] / totalFrequency
+        weightedAverageExp += expValues[i] * probability
+
+        probability = null
+      }
+
+      document.getElementById('weighted_average_exp').value = Math.round(weightedAverageExp)
 
       let ctx = document.getElementById('chart').getContext('2d')
 
@@ -344,6 +379,23 @@
                   size: 14}},
               grid: {
                 color: '#030303'}}}}})
+
+      runType = null
+      expPerRoom = null
+      techRarity = null
+      simchipRarity = null
+      sneakersRarity = null
+      baseExpMultiplier = null
+      techExpMultiplier = null
+      endRunExpMultiplier = null
+      baseRoomExp = null
+      withTechRoomExp = null
+      totalRooms = null
+      freqList = null
+      expValues = null
+      percentLikelihoods = null
+      weightedAverageExp = null
+      ctx = null
     }
     Object.freeze(generateChart)
   </script>
